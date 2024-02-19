@@ -7,6 +7,7 @@ import torch
 from tqdm.auto import tqdm
 
 from quanto.library import disable_extensions
+from quanto import QLinear, qint2, qint4, qint8
 
 
 def get_quantize_symmetric_bench(src_dtype, dst_dtype, per_axis, device):
@@ -28,6 +29,20 @@ def get_unpack_bench(bits, device):
         return torch.ops.quanto.unpack(a, bits)
 
     return bench_fn
+
+
+def get_qlinear_bench(bits, device):
+    features = 10240
+    qtype = {2: qint2, 4: qint4, 8: qint8}[bits]
+    linear = torch.nn.Linear(features, features, bias=False, dtype=torch.float16).to(device)
+    qlinear = QLinear.from_module(linear, weights=qtype)
+    qlinear.freeze()
+    inputs = torch.rand((1, 1, features), dtype=torch.float16).to(device)
+
+    def benf_fn():
+        return qlinear(inputs)
+
+    return benf_fn
 
 
 def timing(get_bench_func, device, iterations=10):
@@ -80,6 +95,7 @@ def timing(get_bench_func, device, iterations=10):
 
 
 GET_BENCH_FUNCTIONS = {
+    "qlinear_int4": lambda device: get_qlinear_bench(4, device),
     "quantize_symmetric_fp32_int8_per_tensor": lambda device: get_quantize_symmetric_bench(
         torch.float32, torch.int8, False, device
     ),
