@@ -126,7 +126,7 @@ A typical quantization workflow would consist of the following steps:
 The first step converts a standard float model into a dynamically quantized model.
 
 ```python
-quantize(model, weights=torch.int8, activations=torch.int8)
+quantize(model, weights=quanto.qint8, activations=quanto.qint8)
 ```
 
 At this stage, only the inference of the model is modified to dynamically quantize the weights.
