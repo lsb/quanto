@@ -1,6 +1,7 @@
 import argparse
 import gc
 import time
+from contextlib import nullcontext
 
 import numpy as np
 import torch
@@ -8,6 +9,7 @@ from tqdm.auto import tqdm
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, GenerationConfig
 
 from quanto import Calibration, freeze, qint4, qint8, quantize
+from quanto.library import disable_extensions
 
 
 CALIBRATION_PROMPT = "It was a bright cold day in April, and the clocks were striking thirteen."
@@ -132,6 +134,7 @@ def main():
         choices=["bnb_4bit", "bnb_8bit", "w4a16", "w4a8", "w8a16", "w8a8"],
         help="One of none, bnb_4bit, bnb_8bit, w8a16, w8a8.",
     )
+    parser.add_argument("--disable-extensions", action='store_true')
     args = parser.parse_args()
     if args.device is None:
         if torch.cuda.is_available():
@@ -147,6 +150,7 @@ def main():
     tokenizer.pad_token_id = tokenizer.eos_token_id
     tokenizer.padding_side = "left"
     quantization_config = None
+    context = nullcontext
     if args.quantization == "bnb_4bit":
         quantization_config = BitsAndBytesConfig(
             load_in_4bit=True, bnb_4bit_quant_type="fp4", bnb_4bit_compute_dtype=dtype
@@ -176,6 +180,8 @@ def main():
             print("Freezing")
             freeze(model)
             print(f"Finished: {time.time()-start:.2f}")
+            if args.disable_extensions:
+                context = disable_extensions
 
     memory = get_device_memory(device)
     if memory is not None:
@@ -186,7 +192,8 @@ def main():
     print(f"Sample generation for sanity check: '{output}' in [{latency:.2f} s]")
     if device.type == "cuda":
         torch.cuda.reset_peak_memory_stats()
-    mean_latency = timing(model, tokenizer, device, batch_size=1, prompt_length=512, nb_tokens=512, iterations=args.it)
+    with context():
+        mean_latency = timing(model, tokenizer, device, batch_size=1, prompt_length=512, nb_tokens=512, iterations=args.it)
     print(f"\nLatency per token: {mean_latency:.3f} ms")
     if device.type == "cuda":
         peak_memory = torch.cuda.max_memory_allocated()
