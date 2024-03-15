@@ -90,6 +90,13 @@ The paragraphs below display results for some popular models on a NVIDIA A100 GP
  </center>
 </div>
 
+<div class="row"><center>
+  <div class="column">
+    <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/princeton-nlp-Sheared-LLaMA_Latency__ms.png" alt="princeton-nlp/Sheared-LLaMA-1.3B Mean latency per token">
+  </div>
+ </center>
+</div>
+
 ## NousResearch/Llama-2-7b-hf
 
 <div class="row"><center>
@@ -102,6 +109,13 @@ The paragraphs below display results for some popular models on a NVIDIA A100 GP
 <div class="row"><center>
   <div class="column">
     <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/NousResearch-Llama-2-7b-hf_Perplexity.png" alt="NousResearch/Llama-2-7b-hf WikiText perplexity">
+  </div>
+ </center>
+</div>
+
+<div class="row"><center>
+  <div class="column">
+    <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/NousResearch-Llama-2-7b-hf_Latency__ms.png" alt="NousResearch/Llama-2-7b-hf Mean latency per token">
   </div>
  </center>
 </div>
@@ -122,6 +136,13 @@ The paragraphs below display results for some popular models on a NVIDIA A100 GP
  </center>
 </div>
 
+<div class="row"><center>
+  <div class="column">
+    <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/mistralai-Mistral-7B-v0.1_Latency__ms.png" alt="mistralai/Mistral-7B-v0.1 Mean latency per token">
+  </div>
+ </center>
+</div>
+
 ## HuggingFaceH4/zephyr-7b-beta
 
 <div class="row"><center>
@@ -138,6 +159,13 @@ The paragraphs below display results for some popular models on a NVIDIA A100 GP
  </center>
 </div>
 
+<div class="row"><center>
+  <div class="column">
+    <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/HuggingFaceH4-zephyr-7b-beta_Latency__ms.png" alt="HuggingFaceH4/zephyr-7b-beta Mean latency per token">
+  </div>
+ </center>
+</div>
+
 ## google/gemma-2b
 
 <div class="row"><center>
@@ -150,6 +178,13 @@ The paragraphs below display results for some popular models on a NVIDIA A100 GP
 <div class="row"><center>
   <div class="column">
     <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/google-gemma-2b_Perplexity.png" alt="google-gemma-2b Lambada prediction accuracy">
+  </div>
+ </center>
+</div>
+
+<div class="row"><center>
+  <div class="column">
+    <img src="https://github.com/huggingface/quanto/blob/main/bench/generation/charts/google-gemma-2b_Latency__ms.png" alt="google/gemma-2b Mean latency per token">
   </div>
  </center>
 </div>
